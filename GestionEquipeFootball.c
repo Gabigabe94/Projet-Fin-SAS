@@ -1,6 +1,20 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+struct Joueur
+{
+    int id;
+    char nom[30];
+    char prenom[30];
+    int numeroMaillot;
+    char poste[10]; //permet de distinguer les rôles (gardien, défenseur, milieu, attaquant).
+    int age;
+    int buts;
+    char dateInscription[20];
+    char status[10]; //indique si le joueur est "titulaire" ou "remplaçant"
+};
+
+
 int main(){
 
     int choix;
@@ -8,14 +22,14 @@ int main(){
     {  
         printf("\n================ Application de gestion d’une Équipe de Football ================\n");
         printf("\n--------------------------------- Menu principale --------------------------------\n");
-        printf("\n1 - Ajouter un joueur \n");
+        printf("1 - Ajouter un joueur \n");
         printf("2 - Afficher la liste de tous les joueurs\n");
         printf("3 - Modifier un joueur\n");
         printf("4 - Supprimer un joueur\n");
         printf("5 - Rechercher un joueur\n");
         printf("6 - Statistiques\n");
         printf("7 - Quitter\n");
-        printf("\n---------------------------- Saisissez votre choix  -------------------------------\n");
+        printf("---------------------------- Saisissez votre choix  -------------------------------\n");
         scanf("%d",&choix);
         getchar();
 
