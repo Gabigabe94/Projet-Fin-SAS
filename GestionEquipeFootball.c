@@ -57,8 +57,9 @@ void ajouterJr()
         {
             printf("Choisissez le poste du joueur [G]: Gardien, [D]: Défenseur, [M]: Milieu, [A]: Attaquant\n");
             scanf("%c", &choi);
-            choi = tolower(choi);
             getchar();
+            choi = tolower(choi);
+            
             switch (choi)
             {
             case 'g':
@@ -125,7 +126,7 @@ void ajouterPlusJrs(){
     for(int i=0; i<nb; i++){
         ajouterJr();
     }
-    printf("Vous avez ajouté tous les joueurs demandés.\n");
+    printf("======= Vous avez ajouté tous les joueurs demandés ========\n");
 }
 
 void afficherListeJrs(){
@@ -139,7 +140,7 @@ void afficherListeJrs(){
         printf("Age : %d\n",listeJoueurs[i].age);
         printf("Buts : %d\n",listeJoueurs[i].buts);
         printf("Statu : %s\n",listeJoueurs[i].statut);
-        printf("--------------------------------------------------");
+        printf("--------------------------------------------------\n");
     }
 }
 
@@ -221,7 +222,6 @@ int main()
                 printf("------------- Saisissez votre choix ------------------\n");
                 scanf("%d", &choixMenu);
                 getchar();
-                //isChoice = false;
                 if (choixMenu == 1)
                 {
                     ajouterJr();
