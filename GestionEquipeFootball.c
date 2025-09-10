@@ -23,27 +23,28 @@ Joueur listeJoueurs[MAX_JOUEURS];
 int nbJoueurs = 0;
 
 void ajouterJoueur()
+
 {
     if (nbJoueurs == MAX_JOUEURS)
     {
-        printf("La liste du joueurs est rempliee \n");
+        printf("La liste des joueurs est remplie. \n");
     }
     else
     {
         printf("Saisissez les informations du joueur\n");
         listeJoueurs[nbJoueurs].id = nbJoueurs + 1;
-        printf("Entrer le nom du joueur :\n");
+        printf("Entrez le nom du joueur :\n");
         fgets(listeJoueurs[nbJoueurs].nom, sizeof(listeJoueurs[nbJoueurs].nom), stdin);
-        printf("Entrer le prenom du joueur :\n");
+        printf("Entrez le prénom du joueur :\n");
         fgets(listeJoueurs[nbJoueurs].prenom, sizeof(listeJoueurs[nbJoueurs].prenom), stdin);
-        printf("Entrer le numéro de maillot du joueur :\n");
+        printf("Entrez le numéro de maillot du joueur :\n");
         scanf("%d", &listeJoueurs[nbJoueurs].numeroMaillot);
         getchar();
         char choi;
         bool isChoice = false;
         do
         {
-            printf("Choisi le poste du joueur [G]: Gardien, [D]: Défenseur, [M]: Milieu, [A]: Attaquant\n");
+            printf("Choisissez le poste du joueur [G]: Gardien, [D]: Défenseur, [M]: Milieu, [A]: Attaquant\n");
             scanf("%c", &choi);
             choi = tolower(choi);
             getchar();
@@ -72,15 +73,15 @@ void ajouterJoueur()
                 break;
             }
         }while (isChoice);
-        printf("Enter l'age du joueur\n");
+        printf("Entez l'âge du joueur :\n");
         scanf("%d", &listeJoueurs[nbJoueurs].age);
         getchar();
-        printf("Enter nombre de buts marqués par le joueur\n");
+        printf("Entez nombre de buts marqués par le joueur :\n");
         scanf("%d", &listeJoueurs[nbJoueurs].buts);
         getchar();
         do
         {
-            printf("Choisi le status du joueur [T]: Titulaire, [R]: Remplaçant\n");
+            printf("Choisissez le status du joueur [T]: Titulaire, [R]: Remplaçant\n");
             scanf("%c", &choi);
             getchar();
             choi = tolower(choi);
@@ -100,11 +101,21 @@ void ajouterJoueur()
                 break;
             }
         }while(isChoice);   
-        printf("========== Le joueur est bien ajouté ============\n");
+        printf("========== Le joueur a bien été ajouté ============\n");
         nbJoueurs++;
     }
 }
 
+void ajouterPlusJoueur(){
+    int nb;
+    printf("Donnez le nombre de joueurs que vous voulez ajouter :\n");
+    scanf("%d",&nb);
+    getchar();
+    for(int i=0; i<nb; i++){
+        ajouterJoueur();
+    }
+    printf("Vous avez ajouté tous les joueurs demandés.\n");
+}
 int main()
 {
 
@@ -147,7 +158,7 @@ int main()
                 }
                 else if (choixMenu == 2)
                 {
-
+                    ajouterPlusJoueur();
                     isChoice = false;
                 }
                 else
