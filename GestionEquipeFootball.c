@@ -15,15 +15,26 @@ typedef struct
     int age;
     int buts;
     // char dateInscription[11];
-    char status[11]; // indique si le joueur est "titulaire" ou "remplaçant"
+    char statut[11]; // indique si le joueur est "titulaire" ou "remplaçant"
 
 } Joueur;
 
 Joueur listeJoueurs[MAX_JOUEURS];
 int nbJoueurs = 0;
 
-void ajouterJoueur()
+void ajouterjr(Joueur j){
+    listeJoueurs[nbJoueurs].id=j.id;
+    strcpy(listeJoueurs[nbJoueurs].nom, j.nom);
+    strcpy(listeJoueurs[nbJoueurs].prenom, j.prenom);
+    listeJoueurs[nbJoueurs].numeroMaillot=j.numeroMaillot;
+    listeJoueurs[nbJoueurs].age=j.age;
+    strcpy(listeJoueurs[nbJoueurs].poste, j.poste);
+    listeJoueurs[nbJoueurs].buts=j.buts;
+    strcpy(listeJoueurs[nbJoueurs].statut, j.statut);
+    nbJoueurs++;
+}
 
+void ajouterJr()
 {
     if (nbJoueurs == MAX_JOUEURS)
     {
@@ -81,18 +92,18 @@ void ajouterJoueur()
         getchar();
         do
         {
-            printf("Choisissez le status du joueur [T]: Titulaire, [R]: Remplaçant\n");
+            printf("Choisissez le statut du joueur [T]: Titulaire, [R]: Remplaçant\n");
             scanf("%c", &choi);
             getchar();
             choi = tolower(choi);
             switch (choi)
             {
             case 't':
-                strcpy(listeJoueurs[nbJoueurs].status, "Titulaire");
+                strcpy(listeJoueurs[nbJoueurs].statut, "Titulaire");
                 isChoice = false;
                 break;
             case 'r':
-                strcpy(listeJoueurs[nbJoueurs].status, "Remplaçant");
+                strcpy(listeJoueurs[nbJoueurs].statut, "Remplaçant");
                 isChoice = false;
                 break;
             default:
@@ -106,18 +117,78 @@ void ajouterJoueur()
     }
 }
 
-void ajouterPlusJoueur(){
+void ajouterPlusJrs(){
     int nb;
     printf("Donnez le nombre de joueurs que vous voulez ajouter :\n");
     scanf("%d",&nb);
     getchar();
     for(int i=0; i<nb; i++){
-        ajouterJoueur();
+        ajouterJr();
     }
     printf("Vous avez ajouté tous les joueurs demandés.\n");
 }
+
+void afficherListeJrs(){
+    for (int i=0; i<nbJoueurs; i++){
+        printf("--------------------------------------------------\n");
+        printf("\nId : %d\n",listeJoueurs[i].id);
+        printf("Nom : %s\n",listeJoueurs[i].nom);
+        printf("Prenom : %s\n",listeJoueurs[i].prenom);
+        printf("Numéro de maillot : %d\n",listeJoueurs[i].numeroMaillot);
+        printf("Poste : %s\n",listeJoueurs[i].poste);
+        printf("Age : %d\n",listeJoueurs[i].age);
+        printf("Buts : %d\n",listeJoueurs[i].buts);
+        printf("Statu : %s\n",listeJoueurs[i].statut);
+        printf("--------------------------------------------------");
+    }
+}
+
+void trieParAge(){
+    Joueur jou;
+    for( int i=0; i< nbJoueurs-1 ; i++){
+        for( int j=i+1; j<nbJoueurs; j++){
+            if(listeJoueurs[i].age < listeJoueurs[j].age){
+                jou = listeJoueurs[i];
+                listeJoueurs[i] = listeJoueurs[j];
+                listeJoueurs[j] = jou;
+            }
+        }
+    }
+    afficherListeJrs();
+}
+
+void trieParNom(){
+    Joueur jou;
+    for( int i=0; i< nbJoueurs-1 ; i++){
+        for( int j=i+1; j<nbJoueurs; j++){
+            if (_stricmp(listeJoueurs[i].nom, listeJoueurs[j].nom) > 0){
+                jou = listeJoueurs[i];
+                listeJoueurs[i] = listeJoueurs[j];
+                listeJoueurs[j] = jou;
+            }
+        }
+    }
+    afficherListeJrs();
+}
+
+void trieParPoste(){
+    
+
+}
+
 int main()
 {
+    Joueur j1 ={1,"Badr","Ahmmed",3,"défenseur",28,5,"titulaire"};
+    ajouterjr(j1);
+    Joueur j2 ={2,"alaoui","Ali",10,"milieu",22,5,"remplaçant"};
+    ajouterjr(j2);
+    Joueur j3 ={3,"Gabi","mhammed",3,"défenseur",30,5,"titulaire"};
+    ajouterjr(j3);
+    Joueur j4 ={4,"ziar","yahya",4,"gardien",18,5,"titulaire"};
+    ajouterjr(j4);
+    Joueur j5 ={5,"yasin","youssef",3,"défenseur",29,5,"remplaçant"};
+    ajouterjr(j5);
+    nbJoueurs= 5;
 
     int choix;
     do
@@ -144,21 +215,21 @@ int main()
         case 1:
             do
             {
-                printf("-------------- Ajouter des joueurs -------------------\n");
+                printf("------------------------------------------------------\n");
                 printf("1 - Ajouter un nouveau joueur\n");
                 printf("2 - Ajouter plusieurs joueurs en une seule opération\n");
                 printf("------------- Saisissez votre choix ------------------\n");
                 scanf("%d", &choixMenu);
                 getchar();
-                isChoice = false;
+                //isChoice = false;
                 if (choixMenu == 1)
                 {
-                    ajouterJoueur();
+                    ajouterJr();
                     isChoice = false;
                 }
                 else if (choixMenu == 2)
                 {
-                    ajouterPlusJoueur();
+                    ajouterPlusJrs();
                     isChoice = false;
                 }
                 else
@@ -182,23 +253,23 @@ int main()
 
                 if (choixMenu == 1)
                 {
-
-                    isChoice = true;
+                    trieParNom();
+                    isChoice = false;
                 }
                 else if (choixMenu == 2)
                 {
-
-                    isChoice = true;
+                    trieParAge();
+                    isChoice = false;
                 }
                 else if (choixMenu == 3)
                 {
 
-                    isChoice = true;
+                    isChoice = false;
                 }
                 else
                 {
                     printf("Choix invalide, veuillez réessayer !!\n");
-                    isChoice = false;
+                    isChoice = true;
                 }
             } while (isChoice);
             break;
@@ -217,22 +288,22 @@ int main()
                 if (choixMenu == 1)
                 {
 
-                    isChoice = true;
+                    isChoice = false;
                 }
                 else if (choixMenu == 2)
                 {
 
-                    isChoice = true;
+                    isChoice = false;
                 }
                 else if (choixMenu == 3)
                 {
 
-                    isChoice = true;
+                    isChoice = false;
                 }
                 else
                 {
                     printf("Choix invalide, veuillez réessayer !!\n");
-                    isChoice = false;
+                    isChoice = true;
                 }
             } while (isChoice);
             break;
@@ -250,17 +321,17 @@ int main()
                 if (choixMenu == 1)
                 {
 
-                    isChoice = true;
+                    isChoice = false;
                 }
                 else if (choixMenu == 2)
                 {
 
-                    isChoice = true;
+                    isChoice = false;
                 }
                 else
                 {
                     printf("Choix invalide, veuillez réessayer !!\n");
-                    isChoice = false;
+                    isChoice = true;
                 }
             } while (isChoice);
             break;
@@ -279,22 +350,23 @@ int main()
                 switch (choixMenu)
                 {
                 case 1:
-                    isChoice = true;
+                    isChoice = false;
                     break;
                 case 2:
-                    isChoice = true;
+                    isChoice = false;
                     break;
                 case 3:
-                    isChoice = true;
+                    isChoice = false;
                     break;
                 case 4:
-                    isChoice = true;
+                    isChoice = false;
                     break;
                 case 5:
-                    isChoice = true;
+                    isChoice = false;
                     break;
                 default:
                     printf("Choix invalide, veuillez réessayer !!\n");
+                    isChoice = true;
                     break;
                 }
             } while (isChoice);
