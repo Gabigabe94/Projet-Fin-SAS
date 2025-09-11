@@ -357,7 +357,7 @@ void rechercherParCritere(Joueur liste[], int nb)
                     afficherJr(liste[i]);
             }
             c = false;
-        }else if (choix == 3)
+        }else if (choix == 0)
         {
             c = false;
         }
