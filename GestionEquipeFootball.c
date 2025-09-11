@@ -11,11 +11,11 @@ typedef struct
     char nom[30];
     char prenom[30];
     int numeroMaillot;
-    char poste[10]; // permet de distinguer les rôles (gardien, défenseur, milieu, attaquant).
+    char poste[10]; //  (gardien, défenseur, milieu, attaquant)
     int age;
     int buts;
     // char dateInscription[11];
-    char statut[11]; // indique si le joueur est "titulaire" ou "remplaçant"
+    char statut[11]; //  "titulaire" ou "remplaçant"
 
 } Joueur;
 
@@ -37,6 +37,7 @@ int ajouterJr(Joueur tabJr[], int taille)
     if (taille >= MAX_JOUEURS)
     {
         printf("La liste des joueurs est remplie. \n");
+        return taille;
     }
     else
     {
@@ -85,10 +86,10 @@ int ajouterJr(Joueur tabJr[], int taille)
                 break;
             }
         } while (isChoice);
-        printf("Entez l'âge du joueur :\n");
+        printf("Entrez l'âge du joueur :\n");
         scanf("%d", &tabJr[taille].age);
         getchar();
-        printf("Entez nombre de buts marqués par le joueur :\n");
+        printf("Entrez nombre de buts marqués par le joueur :\n");
         scanf("%d", &tabJr[taille].buts);
         getchar();
         do
@@ -142,7 +143,11 @@ void afficherJr(Joueur jr)
     printf("Poste : %s\n", jr.poste);
     printf("Age : %d\n", jr.age);
     printf("Buts : %d\n", jr.buts);
-    printf("Statu : %s\n", jr.statut);
+    printf("Statut : %s\n", jr.statut);
+    if (jr.buts >= 10)
+    {
+        printf("***** Ce joueur est une STAR de l'équipe *****\n");
+    }
     printf("\n--------------------------------------------------\n");
 }
 
@@ -179,7 +184,7 @@ void trieParNom(Joueur tabJr[], int taille)
     {
         for (int j = i + 1; j < taille; j++)
         {
-            if (_stricmp(tabJr[i].nom, tabJr[j].nom) > 0)
+            if (strcasecmp(tabJr[i].nom, tabJr[j].nom) > 0)
             {
                 jou = tabJr[i];
                 tabJr[i] = tabJr[j];
@@ -197,7 +202,7 @@ void grouperParPoste(Joueur tabJr[], int taille)
     printf("\n--- Gardiens ---\n");
     for (int i = 0; i < taille; i++)
     {
-        if (_stricmp(tabJr[i].poste, "Gardien") == 0)
+        if (strcasecmp(tabJr[i].poste, "Gardien") == 0)
         {
             afficherJr(tabJr[i]);
         }
@@ -206,7 +211,7 @@ void grouperParPoste(Joueur tabJr[], int taille)
     printf("\n--- Défenseurs ---\n");
     for (int i = 0; i < taille; i++)
     {
-        if (_stricmp(tabJr[i].poste, "Défenseur") == 0)
+        if (strcasecmp(tabJr[i].poste, "Défenseur") == 0)
         {
             afficherJr(tabJr[i]);
         }
@@ -215,7 +220,7 @@ void grouperParPoste(Joueur tabJr[], int taille)
     printf("\n--- Milieux ---\n");
     for (int i = 0; i < taille; i++)
     {
-        if (_stricmp(tabJr[i].poste, "Milieu") == 0)
+        if (strcasecmp(tabJr[i].poste, "Milieu") == 0)
         {
             afficherJr(tabJr[i]);
         }
@@ -224,7 +229,7 @@ void grouperParPoste(Joueur tabJr[], int taille)
     printf("\n--- Attaquants ---\n");
     for (int i = 0; i < taille; i++)
     {
-        if (_stricmp(tabJr[i].poste, "Attaquant") == 0)
+        if (strcasecmp(tabJr[i].poste, "Attaquant") == 0)
         {
             afficherJr(tabJr[i]);
         }
@@ -255,7 +260,7 @@ int supprimerJoueur(Joueur tabJr[], int taille, int id)
     }
     else
     {
-        for (int i = posJoueur; i < taille; i++)
+        for (int i = posJoueur; i < taille - 1; i++)
         {
             tabJr[i] = tabJr[i + 1];
         }
@@ -279,6 +284,87 @@ int rechercherParNom(Joueur tabJr[], int taille, char nom[])
     return -1;
 }
 
+void rechercherParCritere(Joueur liste[], int nb)
+{
+    int choix;
+    bool c;
+    printf("1 - Rechercher par poste\n");
+    printf("2 - Rechercher par tranche d'âge\n");
+    printf("Votre choix : ");
+    scanf("%d", &choix);
+    getchar();
+
+    do
+    {
+        if (choix == 1)
+        {
+            char poste[20];
+            char chPoste;
+            bool isChoice;
+            do
+            {
+                printf("Choisissez le poste :[G] gardien, [D] défenseur, [M] milieu, [A] attaquant\n ");
+                scanf("%c", &chPoste);
+                getchar();
+                chPoste = tolower(chPoste);
+
+                switch (chPoste)
+                {
+                case 'g':
+                    strcpy(poste, "gardien");
+                    isChoice = false;
+                    break;
+                case 'd':
+                    strcpy(poste, "défenseur");
+                    isChoice = false;
+                    break;
+                case 'm':
+                    strcpy(poste, "milieu");
+                    isChoice = false;
+                    break;
+                case 'a':
+                    strcpy(poste, "attaquant");
+                    isChoice = false;
+                    break;
+                default:
+                    printf("Choix invalide, veulliez résseyez !!\n");
+                    isChoice = true;
+                    break;
+                }
+
+            } while (isChoice);
+
+            for (int i = 0; i < nb; i++)
+            {
+                if (strcasecmp(liste[i].poste, poste) == 0)
+                    afficherJr(liste[i]);
+            }
+            c = false;
+        }
+        else if (choix == 2)
+        {
+            int min, max;
+            printf("Entrez l'âge minimum : ");
+            scanf("%d", &min);
+            printf("Entrez l'âge maximum : ");
+            scanf("%d", &max);
+            getchar();
+
+            for (int i = 0; i < nb; i++)
+            {
+                if (liste[i].age >= min && liste[i].age <= max)
+                    afficherJr(liste[i]);
+            }
+            c = false;
+        }
+        else
+        {
+            printf("Choix invalide !\n");
+            c = true;
+        }
+    } while (c);
+}
+
 void modifierPoste(Joueur listeJr[], int n)
 {
 
@@ -296,43 +382,47 @@ void modifierPoste(Joueur listeJr[], int n)
     }
     else
     {
-        printf("Choisissez le nouveau poste [G]: Gardien, [D]: Défenseur, [M]: Milieu, [A]: Attaquant\n");
-        scanf("%c", &choi);
-        getchar();
-        choi = tolower(choi);
-
-        switch (choi)
+        do
         {
-        case 'g':
-            strcpy(listeJr[p].poste, "Gardien");
-            afficherJr(listeJr[p]);
-            printf("============== Modification de poste éffectué ================");
-            isChoice = false;
-            break;
-        case 'd':
-            strcpy(listeJr[p].poste, "Défenseur");
-            afficherJr(listeJr[p]);
-            printf("============== Modification de poste éffectué ================");
-            isChoice = false;
-            break;
-        case 'm':
-            strcpy(listeJr[p].poste, "Milieu");
-            afficherJr(listeJr[p]);
-            printf("============== Modification de poste éffectué ================");
-            isChoice = false;
-            break;
-        case 'a':
-            strcpy(listeJr[p].poste, "Attaquant");
-            afficherJr(listeJr[p]);
-            printf("============== Modification de poste éffectué ================");
-            isChoice = false;
-            break;
 
-        default:
-            printf("Choix invalide, veuillez réessayer !!\n");
-            isChoice = true;
-            break;
-        }
+            printf("Choisissez le nouveau poste [G]: Gardien, [D]: Défenseur, [M]: Milieu, [A]: Attaquant\n");
+            scanf("%c", &choi);
+            getchar();
+            choi = tolower(choi);
+
+            switch (choi)
+            {
+            case 'g':
+                strcpy(listeJr[p].poste, "Gardien");
+                afficherJr(listeJr[p]);
+                printf("============== Modification de poste éffectué ================");
+                isChoice = false;
+                break;
+            case 'd':
+                strcpy(listeJr[p].poste, "Défenseur");
+                afficherJr(listeJr[p]);
+                printf("============== Modification de poste éffectué ================");
+                isChoice = false;
+                break;
+            case 'm':
+                strcpy(listeJr[p].poste, "Milieu");
+                afficherJr(listeJr[p]);
+                printf("============== Modification de poste éffectué ================");
+                isChoice = false;
+                break;
+            case 'a':
+                strcpy(listeJr[p].poste, "Attaquant");
+                afficherJr(listeJr[p]);
+                printf("============== Modification de poste éffectué ================");
+                isChoice = false;
+                break;
+
+            default:
+                printf("Choix invalide, veuillez réessayer !!\n");
+                isChoice = true;
+                break;
+            }
+        } while (isChoice);
     }
 }
 
@@ -458,14 +548,26 @@ int main()
 
     Joueur j1 = {1, "Badr", "Ahmmed", 3, "défenseur", 28, 5, "titulaire"};
     nbJoueurs = ajouterjr(j1, listeJoueurs, nbJoueurs);
-    Joueur j2 = {2, "alaoui", "Ali", 10, "milieu", 22, 5, "remplaçant"};
+    Joueur j2 = {2, "alaoui", "Ali", 10, "milieu", 22, 0, "remplaçant"};
     nbJoueurs = ajouterjr(j2, listeJoueurs, nbJoueurs);
-    Joueur j3 = {3, "Gabi", "mhammed", 3, "défenseur", 30, 5, "titulaire"};
+    Joueur j3 = {3, "allami", "mhammed", 3, "défenseur", 30, 6, "titulaire"};
     nbJoueurs = ajouterjr(j3, listeJoueurs, nbJoueurs);
     Joueur j4 = {4, "ziar", "yahya", 4, "gardien", 18, 5, "titulaire"};
     nbJoueurs = ajouterjr(j4, listeJoueurs, nbJoueurs);
     Joueur j5 = {5, "yasin", "youssef", 3, "attaquant", 29, 5, "remplaçant"};
     nbJoueurs = ajouterjr(j5, listeJoueurs, nbJoueurs);
+    Joueur j6 = {6, "Sami", "Karim", 4, "Milieu", 25, 3, "Titulaire"};
+    nbJoueurs = ajouterjr(j6, listeJoueurs, nbJoueurs);
+    Joueur j7 = {7, "Rachid", "Ahmed", 2, "Défenseur", 27, 1, "Titulaire"};
+    nbJoueurs = ajouterjr(j7, listeJoueurs, nbJoueurs);
+    Joueur j8 = {8, "Omar", "Samir", 11, "Attaquant", 24, 12, "Titulaire"};
+    nbJoueurs = ajouterjr(j8, listeJoueurs, nbJoueurs);
+    Joueur j9 = {9, "Hassan", "Rami", 6, "Milieu", 23, 4, "Remplaçant"};
+    nbJoueurs = ajouterjr(j9, listeJoueurs, nbJoueurs);
+    Joueur j10 = {10, "Nabil", "Fouad", 8, "Milieu", 21, 2, "Titulaire"};
+    nbJoueurs = ajouterjr(j10, listeJoueurs, nbJoueurs);
+    Joueur j11 = {11, "Badr", "aymen", 3, "défenseur", 32, 3, "titulaire"};
+    nbJoueurs = ajouterjr(j11, listeJoueurs, nbJoueurs);
 
     int choix;
     do
@@ -479,7 +581,8 @@ int main()
         printf("5 - Rechercher un joueur\n");
         printf("6 - Statistiques\n");
         printf("7 - Quitter\n");
-        printf("---------------------------- Saisissez votre choix  -------------------------------\n");
+        printf("------------------------------------------------------------------------------------\n");
+        printf("Saisissez votre choix :\n");
         scanf("%d", &choix);
         getchar();
 
@@ -496,7 +599,8 @@ int main()
                 printf("------------------------------------------------------\n");
                 printf("1 - Ajouter un nouveau joueur\n");
                 printf("2 - Ajouter plusieurs joueurs en une seule opération\n");
-                printf("------------- Saisissez votre choix ------------------\n");
+                printf("------------------------------------------------------\n");
+                printf("Saisissez votre choix :\n");
                 scanf("%d", &choixMenu);
                 getchar();
                 if (choixMenu == 1)
@@ -558,7 +662,8 @@ int main()
                 printf("1 - Modifier le poste d’un joueur\n");
                 printf("2 - Modifier l’âge d’un joueur\n");
                 printf("3 - Modifier le nombre de buts marqués par un joueur\n");
-                printf("--------- Saisissez votre choix ---------------\n");
+                printf("------------------------------------------------\n");
+                printf("Saisissez votre choix :\n");
                 scanf("%d", &choixMenu);
                 getchar();
 
@@ -597,7 +702,9 @@ int main()
                 printf("----------- Rechercher un joueur -----------------\n");
                 printf("1 - Rechercher un joueur par Identifiant\n");
                 printf("2 - Rechercher un joueur par Nom\n");
-                printf("--------- Saisissez votre choix ---------------\n");
+                printf("3 - Rechercher par critère spécifique\n");
+                printf("--------------------------------------------------\n");
+                printf("Saisissez votre choix :\n");
                 scanf("%d", &choixMenu);
                 getchar();
                 if (choixMenu == 1)
@@ -632,6 +739,11 @@ int main()
                     }
                     isChoice = false;
                 }
+                else if (choixMenu == 3)
+                {
+                    rechercherParCritere(listeJoueurs, nbJoueurs);
+                    isChoice = false;
+                }
                 else
                 {
                     printf("Choix invalide, veuillez réessayer !!\n");
@@ -648,7 +760,8 @@ int main()
                 printf("3 - Afficher les joueurs ayant marqué plus de X buts (X introduit par vous)\n");
                 printf("4 - Afficher le meilleur buteur (joueur avec le maximum de buts)\n");
                 printf("5 - Afficher le joueur le plus jeune et le plus âgé\n");
-                printf("------------- Saisissez votre choix --------------------\n");
+                printf("-------------------------------------------------------\n");
+                printf("Saisissez votre choix :\n");
                 scanf("%d", &choixMenu);
                 getchar();
                 switch (choixMenu)
