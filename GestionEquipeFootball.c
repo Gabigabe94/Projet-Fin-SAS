@@ -190,7 +190,7 @@ void trieParNom(Joueur tabJr[], int taille)
     afficherListeJrs(tabJr, taille);
 }
 
-void trieParPoste(Joueur tabJr[], int taille)
+void grouperParPoste(Joueur tabJr[], int taille)
 {
     printf("====== Liste des joueurs par poste ======\n");
 
@@ -336,7 +336,8 @@ void modifierPoste(Joueur listeJr[], int n)
     }
 }
 
-void modifierAge(Joueur liste[], int taille){
+void modifierAge(Joueur liste[], int taille)
+{
 
     int id, p, age;
     printf("Entrez l'identifiant du joueur :\n");
@@ -358,7 +359,8 @@ void modifierAge(Joueur liste[], int taille){
     }
 }
 
-void modifierNbButs (Joueur liste[], int taille){
+void modifierNbButs(Joueur liste[], int taille)
+{
 
     int id, p, nbuts;
     printf("Entrez l'identifiant du joueur :\n");
@@ -377,6 +379,75 @@ void modifierNbButs (Joueur liste[], int taille){
         liste[p].buts = nbuts;
         afficherJr(liste[p]);
         printf("================ Modification du nombre de buts éffectué ==============");
+    }
+}
+
+float moyenAge(Joueur liste[], int n)
+{
+    float somme = 0;
+    for (size_t i = 0; i < n; i++)
+    {
+        somme += liste[i].age;
+    }
+    return somme / n;
+}
+
+void listeJrMarquePlusXButs(Joueur lis[], int t)
+{
+
+    int nombreB;
+    printf("Entrez nombre de buts :");
+    scanf("%d", &nombreB);
+    getchar();
+    for (int i = 0; i < t; i++)
+    {
+        if (lis[i].buts > nombreB)
+            afficherJr(lis[i]);
+    }
+}
+
+void meilleurButeur(Joueur listeJr[], int n)
+{
+    int max = listeJr[0].buts;
+    for (int i = 1; i < n; i++)
+    {
+        if (listeJr[i].buts > max)
+            max = listeJr[i].buts;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        if (listeJr[i].buts == max)
+            afficherJr(listeJr[i]);
+    }
+}
+
+void joueurPlAgePlJeune(Joueur liste[], int nb)
+{
+
+    int plusAge = liste[0].age, jeune = liste[0].age;
+    for (int i = 1; i < nb; i++)
+    {
+        if (liste[i].age > plusAge)
+        {
+            plusAge = liste[i].age;
+        }
+        if (liste[i].age < jeune)
+        {
+            jeune = liste[i].age;
+        }
+    }
+    for (int i = 0; i < nb; i++)
+    {
+        if (liste[i].age == plusAge)
+        {
+            printf("Le joueur le plus âgé dans l'équipe est :\n");
+            afficherJr(liste[i]);
+        }
+        if (liste[i].age == jeune)
+        {
+            printf("Le joueur le plus jeune dans l'équipe est :\n");
+            afficherJr(liste[i]);
+        }
     }
 }
 
@@ -469,7 +540,7 @@ int main()
                 }
                 else if (choixMenu == 3)
                 {
-                    trieParPoste(listeJoueurs, nbJoueurs);
+                    grouperParPoste(listeJoueurs, nbJoueurs);
                     isChoice = false;
                 }
                 else
@@ -531,7 +602,7 @@ int main()
                 getchar();
                 if (choixMenu == 1)
                 {
-                    printf("Entrez l'identifiant du joueur à modifier :\n");
+                    printf("Entrez l'identifiant du joueur à rechercher :\n");
                     scanf("%d", &idJr);
                     getchar();
                     posJr = rechercherParId(listeJoueurs, nbJoueurs, idJr);
@@ -547,7 +618,7 @@ int main()
                 }
                 else if (choixMenu == 2)
                 {
-                    printf("Entrez le nom du joueur à modifier :\n");
+                    printf("Entrez le nom du joueur à rechercher :\n");
                     fgets(nom, sizeof(nom), stdin);
                     nom[strcspn(nom, "\n")] = 0;
                     posJr = rechercherParNom(listeJoueurs, nbJoueurs, nom);
@@ -583,18 +654,24 @@ int main()
                 switch (choixMenu)
                 {
                 case 1:
+                    printf("Le nombre total de joueurs dans l’équipe est : %d.\n", nbJoueurs);
                     isChoice = false;
                     break;
                 case 2:
+                    float m = moyenAge(listeJoueurs, nbJoueurs);
+                    printf("L’âge moyen des joueurs est : %.2f ans.", m);
                     isChoice = false;
                     break;
                 case 3:
+                    listeJrMarquePlusXButs(listeJoueurs, nbJoueurs);
                     isChoice = false;
                     break;
                 case 4:
+                    meilleurButeur(listeJoueurs, nbJoueurs);
                     isChoice = false;
                     break;
                 case 5:
+                    joueurPlAgePlJeune(listeJoueurs, nbJoueurs);
                     isChoice = false;
                     break;
                 default:
