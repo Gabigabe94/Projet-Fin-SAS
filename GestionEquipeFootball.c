@@ -133,6 +133,7 @@ int ajouterPlusJrs(Joueur tabJr[], int taille)
     return taille;
 }
 
+// Bonus start d'équipe
 void afficherJr(Joueur jr)
 {
     printf("--------------------------------------------------\n");
@@ -146,7 +147,7 @@ void afficherJr(Joueur jr)
     printf("Statut : %s\n", jr.statut);
     if (jr.buts >= 10)
     {
-        printf("***** Ce joueur est une STAR de l'équipe *****\n");
+        printf("***** Ce joueur est un STAR de l'équipe *****\n");
     }
     printf("\n--------------------------------------------------\n");
 }
@@ -284,6 +285,7 @@ int rechercherParNom(Joueur tabJr[], int taille, char nom[])
     return -1;
 }
 
+// Bonus : Rechercher par critère spécifique (par poste, par tranche d’âge)
 void rechercherParCritere(Joueur liste[], int nb)
 {
     int choix;
@@ -426,6 +428,49 @@ void modifierPoste(Joueur listeJr[], int n)
     }
 }
 
+// Bonus : affecter un joueur à une position spécifique dans l’équipe (par exemple : titulaire ou remplaçant.
+
+void affecterStatut(Joueur liste[], int nb)
+{
+    int id, pos;
+    printf("Entrez l'ID du joueur à modifier : ");
+    scanf("%d", &id);
+    getchar();
+    pos = rechercherParId(liste, nb, id);
+    if (pos == -1)
+    {
+        printf("Joueur avec ID %d non trouvé.\n", id);
+    }
+    else
+    {
+        bool isNotValide;
+        do
+        {
+            printf("1 - Titulaire\n2 - Remplaçant\nVotre choix : ");
+            int choix;
+            scanf("%d", &choix);
+            getchar();
+
+            if (choix == 1)
+            {
+                strcpy(liste[pos].statut, "Titulaire");
+                isNotValide = false;
+            }
+            else if (choix == 2)
+            {
+                strcpy(liste[pos].statut, "Remplaçant");
+                isNotValide = false;
+            }
+            else
+            {
+                printf("Choix invalide, veulliez résseyez \n");
+                isNotValide = true;
+            }
+        } while (isNotValide);
+        printf("Statut mis à jour.\n");
+    }
+}
+
 void modifierAge(Joueur liste[], int taille)
 {
 
@@ -550,7 +595,7 @@ int main()
     nbJoueurs = ajouterjr(j1, listeJoueurs, nbJoueurs);
     Joueur j2 = {2, "alaoui", "Ali", 10, "milieu", 22, 0, "remplaçant"};
     nbJoueurs = ajouterjr(j2, listeJoueurs, nbJoueurs);
-    Joueur j3 = {3, "allami", "mhammed", 3, "défenseur", 30, 6, "titulaire"};
+    Joueur j3 = {3, "allami", "mhammed", 3, "défenseur", 30, 45, "titulaire"};
     nbJoueurs = ajouterjr(j3, listeJoueurs, nbJoueurs);
     Joueur j4 = {4, "ziar", "yahya", 4, "gardien", 18, 5, "titulaire"};
     nbJoueurs = ajouterjr(j4, listeJoueurs, nbJoueurs);
