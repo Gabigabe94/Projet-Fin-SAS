@@ -265,7 +265,8 @@ int supprimerJoueur(Joueur tabJr[], int taille, int id)
     return taille;
 }
 
-int rechercherParNom(Joueur tabJr[], int taille, char nom[]){
+int rechercherParNom(Joueur tabJr[], int taille, char nom[])
+{
 
     for (int i = 0; i < taille; i++)
     {
@@ -277,6 +278,108 @@ int rechercherParNom(Joueur tabJr[], int taille, char nom[]){
     }
     return -1;
 }
+
+void modifierPoste(Joueur listeJr[], int n)
+{
+
+    int id, p;
+    char choi;
+    bool isChoice;
+
+    printf("Entrez l'identifiant du joueur :\n");
+    scanf("%d", &id);
+    getchar();
+    p = rechercherParId(listeJr, n, id);
+    if (p == -1)
+    {
+        printf("Le joueur n'existe pas !!");
+    }
+    else
+    {
+        printf("Choisissez le nouveau poste [G]: Gardien, [D]: Défenseur, [M]: Milieu, [A]: Attaquant\n");
+        scanf("%c", &choi);
+        getchar();
+        choi = tolower(choi);
+
+        switch (choi)
+        {
+        case 'g':
+            strcpy(listeJr[p].poste, "Gardien");
+            afficherJr(listeJr[p]);
+            printf("============== Modification de poste éffectué ================");
+            isChoice = false;
+            break;
+        case 'd':
+            strcpy(listeJr[p].poste, "Défenseur");
+            afficherJr(listeJr[p]);
+            printf("============== Modification de poste éffectué ================");
+            isChoice = false;
+            break;
+        case 'm':
+            strcpy(listeJr[p].poste, "Milieu");
+            afficherJr(listeJr[p]);
+            printf("============== Modification de poste éffectué ================");
+            isChoice = false;
+            break;
+        case 'a':
+            strcpy(listeJr[p].poste, "Attaquant");
+            afficherJr(listeJr[p]);
+            printf("============== Modification de poste éffectué ================");
+            isChoice = false;
+            break;
+
+        default:
+            printf("Choix invalide, veuillez réessayer !!\n");
+            isChoice = true;
+            break;
+        }
+    }
+}
+
+void modifierAge(Joueur liste[], int taille){
+
+    int id, p, age;
+    printf("Entrez l'identifiant du joueur :\n");
+    scanf("%d", &id);
+    getchar();
+    p = rechercherParId(liste, taille, id);
+    if (p == -1)
+    {
+        printf("Le joueur n'existe pas !!");
+    }
+    else
+    {
+        printf("Entrez l'age du joueur :\n");
+        scanf("%d", &age);
+        getchar();
+        liste[p].age = age;
+        afficherJr(liste[p]);
+        printf("================ Modification de l'age éffectué ==============");
+    }
+}
+
+void modifierNbButs (Joueur liste[], int taille){
+
+    int id, p, nbuts;
+    printf("Entrez l'identifiant du joueur :\n");
+    scanf("%d", &id);
+    getchar();
+    p = rechercherParId(liste, taille, id);
+    if (p == -1)
+    {
+        printf("Le joueur n'existe pas !!");
+    }
+    else
+    {
+        printf("Entrez le nombre buts du joueur :\n");
+        scanf("%d", &nbuts);
+        getchar();
+        liste[p].buts = nbuts;
+        afficherJr(liste[p]);
+        printf("================ Modification du nombre de buts éffectué ==============");
+    }
+}
+
 int main()
 {
     Joueur listeJoueurs[MAX_JOUEURS];
@@ -390,17 +493,17 @@ int main()
 
                 if (choixMenu == 1)
                 {
-
+                    modifierPoste(listeJoueurs, nbJoueurs);
                     isChoice = false;
                 }
                 else if (choixMenu == 2)
                 {
-
+                    modifierAge(listeJoueurs, nbJoueurs);
                     isChoice = false;
                 }
                 else if (choixMenu == 3)
                 {
-
+                    modifierNbButs(listeJoueurs, nbJoueurs);
                     isChoice = false;
                 }
                 else
@@ -432,9 +535,12 @@ int main()
                     scanf("%d", &idJr);
                     getchar();
                     posJr = rechercherParId(listeJoueurs, nbJoueurs, idJr);
-                    if(posJr == -1){
+                    if (posJr == -1)
+                    {
                         printf("Le joueur n'existe pas !!\n");
-                    }else{
+                    }
+                    else
+                    {
                         afficherJr(listeJoueurs[posJr]);
                     }
                     isChoice = false;
@@ -443,11 +549,14 @@ int main()
                 {
                     printf("Entrez le nom du joueur à modifier :\n");
                     fgets(nom, sizeof(nom), stdin);
-                    nom[strcspn(nom,"\n")] = 0;
+                    nom[strcspn(nom, "\n")] = 0;
                     posJr = rechercherParNom(listeJoueurs, nbJoueurs, nom);
-                    if(posJr == -1){
+                    if (posJr == -1)
+                    {
                         printf("Le joueur n'existe pas !!\n");
-                    }else{
+                    }
+                    else
+                    {
                         afficherJr(listeJoueurs[posJr]);
                     }
                     isChoice = false;
