@@ -19,14 +19,15 @@ typedef struct
 
 } Joueur;
 
-int ajouterjr(Joueur j, Joueur tabJr[], int taille){
-    tabJr[taille].id=j.id;
+int ajouterjr(Joueur j, Joueur tabJr[], int taille)
+{
+    tabJr[taille].id = j.id;
     strcpy(tabJr[taille].nom, j.nom);
     strcpy(tabJr[taille].prenom, j.prenom);
-    tabJr[taille].numeroMaillot=j.numeroMaillot;
-    tabJr[taille].age=j.age;
+    tabJr[taille].numeroMaillot = j.numeroMaillot;
+    tabJr[taille].age = j.age;
     strcpy(tabJr[taille].poste, j.poste);
-    tabJr[taille].buts=j.buts;
+    tabJr[taille].buts = j.buts;
     strcpy(tabJr[taille].statut, j.statut);
     return taille + 1;
 }
@@ -43,10 +44,10 @@ int ajouterJr(Joueur tabJr[], int taille)
         tabJr[taille].id = taille + 1;
         printf("Entrez le nom du joueur :\n");
         fgets(tabJr[taille].nom, sizeof(tabJr[taille].nom), stdin);
-        tabJr[taille].nom[strcspn(tabJr[taille].nom,"\n")] = 0;
+        tabJr[taille].nom[strcspn(tabJr[taille].nom, "\n")] = 0;
         printf("Entrez le prénom du joueur :\n");
         fgets(tabJr[taille].prenom, sizeof(tabJr[taille].prenom), stdin);
-        tabJr[taille].prenom[strcspn(tabJr[taille].prenom,"\n")] = 0;
+        tabJr[taille].prenom[strcspn(tabJr[taille].prenom, "\n")] = 0;
         printf("Entrez le numéro de maillot du joueur :\n");
         scanf("%d", &tabJr[taille].numeroMaillot);
         getchar();
@@ -58,7 +59,7 @@ int ajouterJr(Joueur tabJr[], int taille)
             scanf("%c", &choi);
             getchar();
             choi = tolower(choi);
-            
+
             switch (choi)
             {
             case 'g':
@@ -83,7 +84,7 @@ int ajouterJr(Joueur tabJr[], int taille)
                 isChoice = true;
                 break;
             }
-        }while (isChoice);
+        } while (isChoice);
         printf("Entez l'âge du joueur :\n");
         scanf("%d", &tabJr[taille].age);
         getchar();
@@ -111,49 +112,57 @@ int ajouterJr(Joueur tabJr[], int taille)
                 isChoice = true;
                 break;
             }
-        }while(isChoice);   
+        } while (isChoice);
         printf("========== Le joueur a bien été ajouté ============\n");
         return taille + 1;
     }
 }
 
-int ajouterPlusJrs(Joueur tabJr[], int taille){
+int ajouterPlusJrs(Joueur tabJr[], int taille)
+{
     int nb;
     printf("Donnez le nombre de joueurs que vous voulez ajouter :\n");
-    scanf("%d",&nb);
+    scanf("%d", &nb);
     getchar();
-    for(int i=0; i<nb; i++){
+    for (int i = 0; i < nb; i++)
+    {
         taille = ajouterJr(tabJr, taille);
     }
     printf("======= Vous avez ajouté tous les joueurs demandés ========\n");
     return taille;
 }
 
-void afficherJr(Joueur jr){
+void afficherJr(Joueur jr)
+{
     printf("--------------------------------------------------\n");
-        printf("\nId : %d\n",jr.id);
-        printf("Nom : %s\n",jr.nom);
-        printf("Prenom : %s\n",jr.prenom);
-        printf("Numéro de maillot : %d\n",jr.numeroMaillot);
-        printf("Poste : %s\n",jr.poste);
-        printf("Age : %d\n",jr.age);
-        printf("Buts : %d\n",jr.buts);
-        printf("Statu : %s\n",jr.statut);
-        printf("\n--------------------------------------------------\n");
+    printf("\nId : %d\n", jr.id);
+    printf("Nom : %s\n", jr.nom);
+    printf("Prenom : %s\n", jr.prenom);
+    printf("Numéro de maillot : %d\n", jr.numeroMaillot);
+    printf("Poste : %s\n", jr.poste);
+    printf("Age : %d\n", jr.age);
+    printf("Buts : %d\n", jr.buts);
+    printf("Statu : %s\n", jr.statut);
+    printf("\n--------------------------------------------------\n");
 }
 
-
-void afficherListeJrs(Joueur tabJr[], int taille){
-    for (int i=0; i<taille; i++){
+void afficherListeJrs(Joueur tabJr[], int taille)
+{
+    for (int i = 0; i < taille; i++)
+    {
         afficherJr(tabJr[i]);
     }
 }
 
-void trieParAge(Joueur tabJr[], int taille){
+void trieParAge(Joueur tabJr[], int taille)
+{
     Joueur jou;
-    for( int i=0; i< taille-1 ; i++){
-        for( int j=i+1; j<taille; j++){
-            if(tabJr[i].age < tabJr[j].age){
+    for (int i = 0; i < taille - 1; i++)
+    {
+        for (int j = i + 1; j < taille; j++)
+        {
+            if (tabJr[i].age < tabJr[j].age)
+            {
                 jou = tabJr[i];
                 tabJr[i] = tabJr[j];
                 tabJr[j] = jou;
@@ -163,11 +172,15 @@ void trieParAge(Joueur tabJr[], int taille){
     afficherListeJrs(tabJr, taille);
 }
 
-void trieParNom(Joueur tabJr[], int taille){
+void trieParNom(Joueur tabJr[], int taille)
+{
     Joueur jou;
-    for( int i=0; i< taille-1 ; i++){
-        for( int j=i+1; j<taille; j++){
-            if (_stricmp(tabJr[i].nom, tabJr[j].nom) > 0){
+    for (int i = 0; i < taille - 1; i++)
+    {
+        for (int j = i + 1; j < taille; j++)
+        {
+            if (_stricmp(tabJr[i].nom, tabJr[j].nom) > 0)
+            {
                 jou = tabJr[i];
                 tabJr[i] = tabJr[j];
                 tabJr[j] = jou;
@@ -177,59 +190,107 @@ void trieParNom(Joueur tabJr[], int taille){
     afficherListeJrs(tabJr, taille);
 }
 
-void trieParPoste(Joueur tabJr[], int taille){
+void trieParPoste(Joueur tabJr[], int taille)
+{
     printf("====== Liste des joueurs par poste ======\n");
 
     printf("\n--- Gardiens ---\n");
-    for (int i = 0; i < taille; i++) {
-        if (_stricmp(tabJr[i].poste, "Gardien") == 0) {
+    for (int i = 0; i < taille; i++)
+    {
+        if (_stricmp(tabJr[i].poste, "Gardien") == 0)
+        {
             afficherJr(tabJr[i]);
         }
     }
 
     printf("\n--- Défenseurs ---\n");
-    for (int i = 0; i < taille; i++) {
-        if (_stricmp(tabJr[i].poste, "Défenseur") == 0) {
+    for (int i = 0; i < taille; i++)
+    {
+        if (_stricmp(tabJr[i].poste, "Défenseur") == 0)
+        {
             afficherJr(tabJr[i]);
         }
     }
 
     printf("\n--- Milieux ---\n");
-    for (int i = 0; i < taille; i++) {
-        if (_stricmp(tabJr[i].poste, "Milieu") == 0) {
+    for (int i = 0; i < taille; i++)
+    {
+        if (_stricmp(tabJr[i].poste, "Milieu") == 0)
+        {
             afficherJr(tabJr[i]);
         }
     }
 
     printf("\n--- Attaquants ---\n");
-    for (int i = 0; i < taille; i++) {
-        if (_stricmp(tabJr[i].poste, "Attaquant") == 0) {
+    for (int i = 0; i < taille; i++)
+    {
+        if (_stricmp(tabJr[i].poste, "Attaquant") == 0)
+        {
             afficherJr(tabJr[i]);
         }
     }
-
 }
 
-Joueur rechercherParId(){
+int rechercherParId(Joueur tabJr[], int taille, int id)
+{
 
-    Joueur j;
-    return j;
+    for (int i = 0; i < taille; i++)
+    {
+        if (tabJr[i].id == id)
+        {
+            return i;
+            break;
+        }
+    }
+    return -1;
 }
 
+int supprimerJoueur(Joueur tabJr[], int taille, int id)
+{
+
+    int posJoueur = rechercherParId(tabJr, taille, id);
+    if (posJoueur == -1)
+    {
+        printf("Le joueur n'existe pas !!\n");
+    }
+    else
+    {
+        for (int i = posJoueur; i < taille; i++)
+        {
+            tabJr[i] = tabJr[i + 1];
+        }
+        printf("Le joueur à bien été supprimer !!\n");
+        return taille - 1;
+    }
+    return taille;
+}
+
+int rechercherParNom(Joueur tabJr[], int taille, char nom[]){
+
+    for (int i = 0; i < taille; i++)
+    {
+        if (_stricmp(tabJr[i].nom, nom) == 0)
+        {
+            return i;
+            break;
+        }
+    }
+    return -1;
+}
 int main()
 {
     Joueur listeJoueurs[MAX_JOUEURS];
     int nbJoueurs = 0;
 
-    Joueur j1 ={1,"Badr","Ahmmed",3,"défenseur",28,5,"titulaire"};
+    Joueur j1 = {1, "Badr", "Ahmmed", 3, "défenseur", 28, 5, "titulaire"};
     nbJoueurs = ajouterjr(j1, listeJoueurs, nbJoueurs);
-    Joueur j2 ={2,"alaoui","Ali",10,"milieu",22,5,"remplaçant"};
+    Joueur j2 = {2, "alaoui", "Ali", 10, "milieu", 22, 5, "remplaçant"};
     nbJoueurs = ajouterjr(j2, listeJoueurs, nbJoueurs);
-    Joueur j3 ={3,"Gabi","mhammed",3,"défenseur",30,5,"titulaire"};
+    Joueur j3 = {3, "Gabi", "mhammed", 3, "défenseur", 30, 5, "titulaire"};
     nbJoueurs = ajouterjr(j3, listeJoueurs, nbJoueurs);
-    Joueur j4 ={4,"ziar","yahya",4,"gardien",18,5,"titulaire"};
+    Joueur j4 = {4, "ziar", "yahya", 4, "gardien", 18, 5, "titulaire"};
     nbJoueurs = ajouterjr(j4, listeJoueurs, nbJoueurs);
-    Joueur j5 ={5,"yasin","youssef",3,"attaquant",29,5,"remplaçant"};
+    Joueur j5 = {5, "yasin", "youssef", 3, "attaquant", 29, 5, "remplaçant"};
     nbJoueurs = ajouterjr(j5, listeJoueurs, nbJoueurs);
 
     int choix;
@@ -248,8 +309,9 @@ int main()
         scanf("%d", &choix);
         getchar();
 
-        int choixMenu;
+        int choixMenu, idJr, posJr;
         bool isChoice;
+        char nom[30];
 
         switch (choix)
         {
@@ -348,7 +410,12 @@ int main()
                 }
             } while (isChoice);
             break;
+
         case 4:
+            printf("Entrez l'identifiant du joueur à supprimer :\n");
+            scanf("%d", &idJr);
+            getchar();
+            nbJoueurs = supprimerJoueur(listeJoueurs, nbJoueurs, idJr);
             break;
         case 5:
             do
@@ -361,12 +428,28 @@ int main()
                 getchar();
                 if (choixMenu == 1)
                 {
-
+                    printf("Entrez l'identifiant du joueur à modifier :\n");
+                    scanf("%d", &idJr);
+                    getchar();
+                    posJr = rechercherParId(listeJoueurs, nbJoueurs, idJr);
+                    if(posJr == -1){
+                        printf("Le joueur n'existe pas !!\n");
+                    }else{
+                        afficherJr(listeJoueurs[posJr]);
+                    }
                     isChoice = false;
                 }
                 else if (choixMenu == 2)
                 {
-
+                    printf("Entrez le nom du joueur à modifier :\n");
+                    fgets(nom, sizeof(nom), stdin);
+                    nom[strcspn(nom,"\n")] = 0;
+                    posJr = rechercherParNom(listeJoueurs, nbJoueurs, nom);
+                    if(posJr == -1){
+                        printf("Le joueur n'existe pas !!\n");
+                    }else{
+                        afficherJr(listeJoueurs[posJr]);
+                    }
                     isChoice = false;
                 }
                 else
