@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <ctype.h>
 #include <string.h>
@@ -32,6 +33,68 @@ int ajouterjr(Joueur j, Joueur tabJr[], int taille)
     return taille + 1;
 }
 
+void saisirPoste(char poste[])
+{
+    char choix;
+    bool valide;
+    do
+    {
+        printf("Choisissez le poste du joueur [G]: Gardien, [D]: Défenseur, [M]: Milieu, [A]: Attaquant\n");
+        scanf("%c", &choix);
+        getchar();
+        choix = tolower(choix);
+        switch (choix)
+        {
+        case 'g':
+            strcpy(poste, "Gardien");
+            valide = true;
+            break;
+        case 'd':
+            strcpy(poste, "Défenseur");
+            valide = true;
+            break;
+        case 'm':
+            strcpy(poste, "Milieu");
+            valide = true;
+            break;
+        case 'a':
+            strcpy(poste, "Attaquant");
+            valide = true;
+            break;
+        default:
+            printf("Choix invalide, veuillez réessayer !!\n");
+            valide = false;
+        }
+    } while (!valide);
+}
+
+void saisirStatut(char statut[])
+{
+    char choix;
+    bool valide;
+    do
+    {
+        printf("Choisissez le statut du joueur [T]: Titulaire, [R]: Remplaçant\n");
+        scanf("%c", &choix);
+        getchar();
+        choix = tolower(choix);
+        switch (choix)
+        {
+        case 't':
+            strcpy(statut, "Titulaire");
+            valide = true;
+            break;
+        case 'r':
+            strcpy(statut, "Remplaçant");
+            valide = true;
+            break;
+        default:
+            printf("Choix invalide, veuillez réessayer !!\n");
+            valide = false;
+        }
+    } while (!valide);
+}
+
 int ajouterJr(Joueur tabJr[], int taille)
 {
     if (taille >= MAX_JOUEURS)
@@ -49,71 +112,16 @@ int ajouterJr(Joueur tabJr[], int taille)
         printf("Entrez le prénom du joueur :\n");
         fgets(tabJr[taille].prenom, sizeof(tabJr[taille].prenom), stdin);
         tabJr[taille].prenom[strcspn(tabJr[taille].prenom, "\n")] = 0;
-        printf("Entrez le numéro de maillot du joueur :\n");
+        printf("Entrer le numéro du maiilot :\n");
         scanf("%d", &tabJr[taille].numeroMaillot);
-        getchar();
-        char choi;
-        bool isChoice = false;
-        do
-        {
-            printf("Choisissez le poste du joueur [G]: Gardien, [D]: Défenseur, [M]: Milieu, [A]: Attaquant\n");
-            scanf("%c", &choi);
-            getchar();
-            choi = tolower(choi);
-
-            switch (choi)
-            {
-            case 'g':
-                strcpy(tabJr[taille].poste, "Gardien");
-                isChoice = false;
-                break;
-            case 'd':
-                strcpy(tabJr[taille].poste, "Défenseur");
-                isChoice = false;
-                break;
-            case 'm':
-                strcpy(tabJr[taille].poste, "Milieu");
-                isChoice = false;
-                break;
-            case 'a':
-                strcpy(tabJr[taille].poste, "Attaquant");
-                isChoice = false;
-                break;
-
-            default:
-                printf("Choix invalide, veuillez réessayer !!\n");
-                isChoice = true;
-                break;
-            }
-        } while (isChoice);
+        saisirPoste(tabJr[taille].poste);
         printf("Entrez l'âge du joueur :\n");
         scanf("%d", &tabJr[taille].age);
         getchar();
         printf("Entrez nombre de buts marqués par le joueur :\n");
         scanf("%d", &tabJr[taille].buts);
         getchar();
-        do
-        {
-            printf("Choisissez le statut du joueur [T]: Titulaire, [R]: Remplaçant\n");
-            scanf("%c", &choi);
-            getchar();
-            choi = tolower(choi);
-            switch (choi)
-            {
-            case 't':
-                strcpy(tabJr[taille].statut, "Titulaire");
-                isChoice = false;
-                break;
-            case 'r':
-                strcpy(tabJr[taille].statut, "Remplaçant");
-                isChoice = false;
-                break;
-            default:
-                printf("Choix invalide, veuillez réessayer !!\n");
-                isChoice = true;
-                break;
-            }
-        } while (isChoice);
+        saisirStatut(tabJr[taille].statut);
         printf("========== Le joueur a bien été ajouté ============\n");
         return taille + 1;
     }
@@ -270,17 +278,23 @@ int supprimerJoueur(Joueur tabJr[], int taille, int id)
     return taille;
 }
 
-int rechercherParNom(Joueur tabJr[], int taille, char nom[])
+void rechercherParNom(Joueur tabJr[], int taille)
 {
+    char nom[30];
+    int exist = 0;
+    printf("Entrez le nom du joueur à rechercher : ");
+    fgets(nom, sizeof(nom), stdin);
+    nom[strcspn(nom, "\n")] = 0;
     for (int i = 0; i < taille; i++)
     {
-        if (_stricmp(tabJr[i].nom, nom) == 0)
+        if (strcasecmp(tabJr[i].nom, nom) == 0)
         {
-            return i;
-            break;
+            afficherJr(tabJr[i]);
+            exist = 1;
         }
     }
-    return -1;
+    if (exist == 0)
+        printf("Joueur avec NOM %s non trouvé.\n", nom);
 }
 
 // Bonus : Rechercher par critère spécifique (par poste, par tranche d’âge)
@@ -294,47 +308,12 @@ void rechercherParCritere(Joueur liste[], int nb)
     printf("Votre choix : ");
     scanf("%d", &choix);
     getchar();
-
     do
     {
         if (choix == 1)
         {
             char poste[20];
-            char chPoste;
-            bool isChoice;
-            do
-            {
-                printf("Choisissez le poste :[G] gardien, [D] défenseur, [M] milieu, [A] attaquant\n ");
-                scanf("%c", &chPoste);
-                getchar();
-                chPoste = tolower(chPoste);
-
-                switch (chPoste)
-                {
-                case 'g':
-                    strcpy(poste, "gardien");
-                    isChoice = false;
-                    break;
-                case 'd':
-                    strcpy(poste, "défenseur");
-                    isChoice = false;
-                    break;
-                case 'm':
-                    strcpy(poste, "milieu");
-                    isChoice = false;
-                    break;
-                case 'a':
-                    strcpy(poste, "attaquant");
-                    isChoice = false;
-                    break;
-                default:
-                    printf("Choix invalide, veulliez résseyez !!\n");
-                    isChoice = true;
-                    break;
-                }
-
-            } while (isChoice);
-
+            saisirPoste(poste);
             for (int i = 0; i < nb; i++)
             {
                 if (strcasecmp(liste[i].poste, poste) == 0)
@@ -357,7 +336,8 @@ void rechercherParCritere(Joueur liste[], int nb)
                     afficherJr(liste[i]);
             }
             c = false;
-        }else if (choix == 0)
+        }
+        else if (choix == 0)
         {
             c = false;
         }
@@ -371,62 +351,20 @@ void rechercherParCritere(Joueur liste[], int nb)
 
 void modifierPoste(Joueur listeJr[], int n)
 {
-
     int id, p;
-    char choi;
-    bool isChoice;
 
     printf("Entrez l'identifiant du joueur :\n");
     scanf("%d", &id);
     getchar();
     p = rechercherParId(listeJr, n, id);
+
     if (p == -1)
     {
         printf("Joueur avec ID %d non trouvé.\n", id);
     }
     else
     {
-        do
-        {
-
-            printf("Choisissez le nouveau poste [G]: Gardien, [D]: Défenseur, [M]: Milieu, [A]: Attaquant\n");
-            scanf("%c", &choi);
-            getchar();
-            choi = tolower(choi);
-
-            switch (choi)
-            {
-            case 'g':
-                strcpy(listeJr[p].poste, "Gardien");
-                afficherJr(listeJr[p]);
-                printf("============== Modification de poste éffectué ================");
-                isChoice = false;
-                break;
-            case 'd':
-                strcpy(listeJr[p].poste, "Défenseur");
-                afficherJr(listeJr[p]);
-                printf("============== Modification de poste éffectué ================");
-                isChoice = false;
-                break;
-            case 'm':
-                strcpy(listeJr[p].poste, "Milieu");
-                afficherJr(listeJr[p]);
-                printf("============== Modification de poste éffectué ================");
-                isChoice = false;
-                break;
-            case 'a':
-                strcpy(listeJr[p].poste, "Attaquant");
-                afficherJr(listeJr[p]);
-                printf("============== Modification de poste éffectué ================");
-                isChoice = false;
-                break;
-
-            default:
-                printf("Choix invalide, veuillez réessayer !!\n");
-                isChoice = true;
-                break;
-            }
-        } while (isChoice);
+        saisirPoste(listeJr[p].poste);
     }
 }
 
@@ -444,30 +382,7 @@ void affecterStatut(Joueur liste[], int nb)
     }
     else
     {
-        bool isNotValide;
-        do
-        {
-            printf("1 - Titulaire\n2 - Remplaçant\nVotre choix : ");
-            int choix;
-            scanf("%d", &choix);
-            getchar();
-
-            if (choix == 1)
-            {
-                strcpy(liste[pos].statut, "Titulaire");
-                isNotValide = false;
-            }
-            else if (choix == 2)
-            {
-                strcpy(liste[pos].statut, "Remplaçant");
-                isNotValide = false;
-            }
-            else
-            {
-                printf("Choix invalide, veulliez résseyez \n");
-                isNotValide = true;
-            }
-        } while (isNotValide);
+        saisirStatut(liste[pos].statut);
         printf("Statut mis à jour.\n");
     }
 }
@@ -572,16 +487,19 @@ void joueurPlAgePlJeune(Joueur liste[], int nb)
             jeune = liste[i].age;
         }
     }
+    printf("\nLe joueur le plus âgé dans l'équipe est :\n");
     for (int i = 0; i < nb; i++)
     {
         if (liste[i].age == plusAge)
         {
-            printf("Le joueur le plus âgé dans l'équipe est :\n");
             afficherJr(liste[i]);
         }
+    }
+    printf("\nLe joueur le plus jeune dans l'équipe est :\n");
+    for (int i = 0; i < nb; i++)
+    {
         if (liste[i].age == jeune)
         {
-            printf("Le joueur le plus jeune dans l'équipe est :\n");
             afficherJr(liste[i]);
         }
     }
@@ -590,15 +508,16 @@ void joueurPlAgePlJeune(Joueur liste[], int nb)
 int main()
 {
     Joueur listeJoueurs[MAX_JOUEURS] = {
-        {1, "Benzema", "Karim", 9, "attaquant", 36, 15, "titulaire"},
+        {1, "Benzema", "Karim", 9, "attaquant", 38, 15, "titulaire"},
         {2, "Courtois", "Thibaut", 1, "gardien", 32, 0, "titulaire"},
         {3, "Varane", "Raphael", 4, "défenseur", 31, 2, "titulaire"},
         {4, "Modric", "Luka", 10, "milieu", 38, 5, "titulaire"},
         {5, "Vinicius", "Junior", 7, "attaquant", 25, 12, "titulaire"},
-        {6, "Camavinga", "Eduardo", 12, "milieu", 22, 3, "remplaçant"},
+        {6, "Camavinga", "Eduardo", 12, "milieu", 19, 3, "remplaçant"},
         {7, "Nacho", "Fernandez", 6, "défenseur", 34, 1, "remplaçant"},
-        {8, "Rodrygo", "Goes", 11, "attaquant", 24, 8, "titulaire"}};
-    int nbJoueurs = 8;
+        {8, "Rodrygo", "Goes", 11, "attaquant", 19, 8, "titulaire"},
+        {9, "Garcia", "Gozalez", 11, "attaquant", 19, 25, "titulaire"}};
+    int nbJoueurs = 9;
 
     int choix;
     do
@@ -778,18 +697,7 @@ int main()
                 }
                 else if (choixMenu == 2)
                 {
-                    printf("Entrez le nom du joueur à rechercher : ");
-                    fgets(nom, sizeof(nom), stdin);
-                    nom[strcspn(nom, "\n")] = 0;
-                    posJr = rechercherParNom(listeJoueurs, nbJoueurs, nom);
-                    if (posJr == -1)
-                    {
-                        printf("Joueur avec NOM %s non trouvé.\n", nom);
-                    }
-                    else
-                    {
-                        afficherJr(listeJoueurs[posJr]);
-                    }
+                    rechercherParNom(listeJoueurs, nbJoueurs);
                     isChoice = false;
                 }
                 else if (choixMenu == 3)
@@ -846,8 +754,8 @@ int main()
                     isChoice = false;
                     break;
                 case 0:
-                    isChoice = false;  
-                    break; 
+                    isChoice = false;
+                    break;
                 default:
                     printf("Choix invalide, veuillez réessayer !!\n");
                     isChoice = true;
